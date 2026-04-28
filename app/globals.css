@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --card: #161d2e;
+  --border: #1e2a42;
+  --border-active: #253352;
+  --primary: #3b82f6;
+  --primary-dim: #1d3461;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --background: var(--bg);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-border-active: var(--border-active);
+  --color-primary: var(--primary);
+  --color-primary-dim: var(--primary-dim);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+  outline: none;
+}
+
+html,
+body {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgb(59 130 246 / 0.1), transparent 24rem),
+    radial-gradient(circle at top right, rgb(16 185 129 / 0.06), transparent 18rem),
+    linear-gradient(180deg, #0a0e1a 0%, #0d1322 100%);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  transition: all 150ms ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
+}
+
+::selection {
+  background: rgb(59 130 246 / 0.3);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-active) transparent;
+}
+
+.surface-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.crm-shell {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.01), transparent 12rem),
+    linear-gradient(180deg, #0b1120 0%, #0a0e1a 100%);
+}
+
+.crm-panel {
+  border: 1px solid rgb(30 42 66 / 1);
+  background: linear-gradient(180deg, rgb(22 29 46 / 0.98), rgb(17 24 39 / 0.96));
+  border-radius: 16px;
+}
+
+.crm-subtle {
+  color: var(--text-secondary);
+}
+
+.crm-section-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
