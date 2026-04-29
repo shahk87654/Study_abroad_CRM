@@ -14,7 +14,7 @@ export function Topbar({
       <div className="px-4 py-4 lg:px-8">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-[0.24em] text-text-muted">Global Grads Operations</p>
+            <p className="text-[11px] uppercase tracking-[0.24em] text-text-muted">Enrollio Operations</p>
             <div className="mt-2 flex items-end justify-between gap-4">
               <div>
                 <h1 className="font-display text-2xl font-semibold lg:text-[2rem]">{title}</h1>

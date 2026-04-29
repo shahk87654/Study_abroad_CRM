@@ -13,8 +13,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Global Grads CRM",
-  description: "Internal CRM for Global Grads Consulting",
+  title: "Enrollio CRM",
+  description: "Internal CRM for Enrollio",
 };
 
 export default function RootLayout({

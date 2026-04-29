@@ -47,7 +47,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
   return (
     <main className="surface-grid flex min-h-screen items-center justify-center p-6">
       <Card className="w-full max-w-md p-8">
-        <p className="text-sm uppercase tracking-[0.3em] text-text-secondary">Global Grads Consulting</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-text-secondary">Enrollio</p>
         <h1 className="mt-4 font-display text-3xl font-semibold">Sign in to the CRM</h1>
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <Input placeholder="Email" type="email" {...register("email")} />

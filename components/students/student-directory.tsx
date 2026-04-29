@@ -36,11 +36,11 @@ export function StudentDirectory({ students }: { students: Student[] }) {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="pl-9"
-              placeholder="Search by student name, email, or GG-001 ID"
+              placeholder="Search by student name, email, or EN-001 ID"
             />
           </div>
           <div className="text-sm text-text-secondary">
-            Each student has a unique searchable ID like <span className="font-medium text-foreground">GG-001</span>. Open any row to review profile details and uploaded documents.
+            Each student has a unique searchable ID like <span className="font-medium text-foreground">EN-001</span>. Open any row to review profile details and uploaded documents.
           </div>
         </div>
       </div>

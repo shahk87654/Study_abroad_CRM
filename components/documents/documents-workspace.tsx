@@ -100,7 +100,7 @@ export function DocumentsWorkspace({
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="pl-9"
-              placeholder="Search by GG-001, file name, category, or rejection reason"
+              placeholder="Search by EN-001, file name, category, or rejection reason"
             />
           </div>
         </div>

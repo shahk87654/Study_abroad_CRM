@@ -35,7 +35,7 @@ export function Sidebar({ unreadCount }: { unreadCount: number }) {
               <Sparkles className="size-4" />
             </div>
             <div>
-              <p className="font-display text-base font-semibold">Global Grads</p>
+              <p className="font-display text-base font-semibold">Enrollio</p>
               <p className="text-xs text-text-secondary">Internal CRM</p>
             </div>
           </div>

@@ -65,7 +65,7 @@ export function LiveScholarships({ students }: { students: Student[] }) {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="pl-9"
-              placeholder="Search by GG-001, student name, or program"
+              placeholder="Search by EN-001, student name, or program"
             />
           </div>
           <select

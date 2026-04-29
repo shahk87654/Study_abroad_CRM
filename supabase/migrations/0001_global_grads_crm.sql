@@ -97,7 +97,7 @@ declare
   next_value bigint;
 begin
   next_value := nextval('public.student_code_seq');
-  return 'GG-' || lpad(next_value::text, 3, '0');
+  return 'EN-' || lpad(next_value::text, 3, '0');
 end;
 $$;
 

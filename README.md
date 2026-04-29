@@ -1,6 +1,6 @@
-# Global Grads CRM
+# Enrollio CRM
 
-Production-style internal CRM for a study abroad consultancy, built for Global Grads Consulting in Lahore, Pakistan.
+Production-style internal CRM for a study abroad consultancy, built for Enrollio in Lahore, Pakistan.
 
 This app is designed for counsellors and admins to manage students, track applications, review documents, follow stage movement, and work from a single admissions dashboard.
 
@@ -22,7 +22,7 @@ The repository currently includes:
 
 - Dashboard with operational stats, activity feed, and pipeline distribution
 - Student intake form and searchable directory
-- Unique student codes in `GG-001` format through Supabase sequence generation
+- Unique student codes in `EN-001` format through Supabase sequence generation
 - Student profile side panel with:
   - overview
   - documents
@@ -160,7 +160,7 @@ It also sets up:
 
 - stage definitions 0 through 9
 - row-level security
-- `generate_student_code()` for `GG-001` style IDs
+- `generate_student_code()` for `EN-001` style IDs
 - update triggers for activity timestamps
 
 ## Main Routes
