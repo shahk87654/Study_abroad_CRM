@@ -13,14 +13,14 @@ export default async function DashboardPage() {
 
   return (
     <main className="crm-shell min-h-screen">
-      <Topbar title="Dashboard" subtitle="Daily operating view for counsellors and admins." />
+      <Topbar title="Dashboard" subtitle="Daily operating view for admin work." />
       <div className="space-y-6 px-4 py-6 lg:px-8">
         <section className="crm-panel grid gap-4 p-6 xl:grid-cols-[1.2fr_0.8fr]">
           <div>
             <p className="text-[11px] uppercase tracking-[0.24em] text-text-muted">Today at a glance</p>
             <h2 className="mt-3 font-display text-3xl font-semibold">Admissions work, document review, and stage movement in one control room.</h2>
             <p className="mt-3 max-w-2xl text-sm text-text-secondary">
-              This view is meant for repeated daily use: what moved, what is blocked, and where counsellors should focus next.
+              This view is meant for repeated daily use: what moved, what is blocked, and where the next admin focus belongs.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">

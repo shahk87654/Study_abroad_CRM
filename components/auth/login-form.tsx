@@ -1,17 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { loginSchema } from "@/lib/utils/schemas";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { TEST_ADMIN_EMAIL, TEST_ADMIN_PASSWORD, isTestAdminCredentials } from "@/lib/supabase/test-auth";
+import { ADMIN_EMAIL } from "@/lib/auth/admin";
 import type { z } from "zod";
 
 type FormValues = z.infer<typeof loginSchema>;
@@ -30,28 +28,14 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
 
   const onSubmit = handleSubmit((values) => {
     startTransition(async () => {
-      if (isTestAdminCredentials(values.email, values.password)) {
-        const demoResponse = await fetch("/api/auth/test-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-        if (!demoResponse.ok) {
-          setError("root", { message: "Test admin login failed." });
-          return;
-        }
-
-        router.push(redirectTo.startsWith("/crm") ? redirectTo : "/crm");
-        router.refresh();
-        return;
-      }
-
-      const supabase = createSupabaseBrowserClient();
-      const { error } = await supabase.auth.signInWithPassword(values);
-
-      if (error) {
-        setError("root", { message: error.message });
+      if (!response.ok) {
+        setError("root", { message: "Invalid admin credentials." });
         return;
       }
 
@@ -75,16 +59,9 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
           </Button>
         </form>
         <div className="mt-6 rounded-xl border border-border bg-surface p-4 text-sm">
-          <p className="font-medium text-foreground">Test admin</p>
-          <p className="mt-2 text-text-secondary">Email: {TEST_ADMIN_EMAIL}</p>
-          <p className="text-text-secondary">Password: {TEST_ADMIN_PASSWORD}</p>
+          <p className="font-medium text-foreground">Admin access only</p>
+          <p className="mt-2 text-text-secondary">Email: {ADMIN_EMAIL}</p>
         </div>
-        <p className="mt-6 text-sm text-text-secondary">
-          Prefer a passwordless flow?{" "}
-          <Link href="/magic-link" className="text-primary">
-            Use a magic link
-          </Link>
-        </p>
       </Card>
     </main>
   );

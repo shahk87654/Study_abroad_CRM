@@ -2,14 +2,14 @@ import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { supabaseEnv } from "@/lib/supabase/env";
-import { TEST_AUTH_COOKIE } from "@/lib/supabase/test-auth";
+import { ADMIN_SESSION_COOKIE } from "@/lib/auth/admin";
 
 export function createSupabaseServerClient() {
   const cookieStore = cookies();
-  const isTestAdmin = cookieStore.get(TEST_AUTH_COOKIE)?.value === "1";
+  const hasAdminSession = Boolean(cookieStore.get(ADMIN_SESSION_COOKIE)?.value);
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (isTestAdmin && serviceRoleKey) {
+  if (hasAdminSession && serviceRoleKey) {
     return createClient(supabaseEnv.url(), serviceRoleKey, {
       auth: {
         persistSession: false,

@@ -45,7 +45,7 @@ export function Sidebar({ unreadCount }: { unreadCount: number }) {
           <div className="rounded-xl border border-border bg-white/[0.02] px-3 py-3">
             <p className="text-[11px] uppercase tracking-[0.24em] text-text-muted">Workspace</p>
             <p className="mt-2 text-sm font-medium">Lahore Operations</p>
-            <p className="mt-1 text-xs text-text-secondary">Counsellors, admins, and document review in one place.</p>
+            <p className="mt-1 text-xs text-text-secondary">Admin operations and document review in one place.</p>
           </div>
         </div>
 

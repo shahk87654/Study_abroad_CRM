@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { TEST_AUTH_COOKIE } from "@/lib/supabase/test-auth";
+import { ADMIN_SESSION_COOKIE } from "@/lib/auth/admin";
 
 export async function POST() {
   const response = NextResponse.json({ ok: true });
   response.cookies.set({
-    name: TEST_AUTH_COOKIE,
+    name: ADMIN_SESSION_COOKIE,
     value: "",
     httpOnly: true,
     sameSite: "lax",

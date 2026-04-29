@@ -104,7 +104,7 @@ export function ProfilePanel({
                   <p className="text-xs uppercase tracking-[0.18em] text-text-muted">Planning</p>
                   <div className="mt-3 space-y-2 text-sm">
                     <p>Intake: {student.intake_term ?? "Not set"}</p>
-                    <p>Counsellor: {student.assigned_counsellor?.full_name ?? "Unassigned"}</p>
+                    <p>Owner: Admin</p>
                     <p className="text-text-secondary">{student.private_notes ?? "No internal notes yet."}</p>
                   </div>
                 </div>

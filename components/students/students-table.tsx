@@ -11,7 +11,7 @@ export function StudentsTable({ students }: { students: Student[] }) {
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <div>
           <h2 className="crm-section-title">Student Directory</h2>
-          <p className="mt-1 text-sm text-text-secondary">High-signal scan view for counsellors and admins.</p>
+          <p className="mt-1 text-sm text-text-secondary">High-signal scan view for admin operations.</p>
         </div>
         <div className="rounded-full border border-border px-3 py-1 text-xs text-text-secondary">{students.length} records</div>
       </div>

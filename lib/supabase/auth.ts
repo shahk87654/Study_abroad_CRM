@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { TEST_AUTH_COOKIE, TEST_ADMIN_PROFILE } from "@/lib/supabase/test-auth";
+import { ADMIN_PROFILE, ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/auth/admin";
 import type { UserProfile, UserRole } from "@/types";
 
 export interface AppAuthUser {
@@ -11,21 +10,16 @@ export interface AppAuthUser {
 
 export async function getCurrentSession() {
   const cookieStore = cookies();
-  if (cookieStore.get(TEST_AUTH_COOKIE)?.value === "1") {
+  if (await verifyAdminSession(cookieStore.get(ADMIN_SESSION_COOKIE)?.value)) {
     return {
       user: {
-        id: TEST_ADMIN_PROFILE.id,
-        email: TEST_ADMIN_PROFILE.email,
+        id: ADMIN_PROFILE.id,
+        email: ADMIN_PROFILE.email,
       } satisfies AppAuthUser,
     };
   }
 
-  const supabase = createSupabaseServerClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  return session;
+  return null;
 }
 
 export async function requireUser() {
@@ -40,14 +34,11 @@ export async function requireUser() {
 
 export async function getCurrentUserProfile(): Promise<UserProfile | null> {
   const cookieStore = cookies();
-  if (cookieStore.get(TEST_AUTH_COOKIE)?.value === "1") {
-    return TEST_ADMIN_PROFILE;
+  if (await verifyAdminSession(cookieStore.get(ADMIN_SESSION_COOKIE)?.value)) {
+    return ADMIN_PROFILE;
   }
 
-  const user = await requireUser();
-  const supabase = createSupabaseServerClient();
-  const { data } = await supabase.from("users").select("*").eq("id", user.id).single();
-  return data;
+  return null;
 }
 
 export async function requireRole(allowedRoles: UserRole[]) {

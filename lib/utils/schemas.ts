@@ -5,16 +5,11 @@ export const loginSchema = z.object({
   password: z.string().min(8),
 });
 
-export const magicLinkSchema = z.object({
-  email: z.string().email(),
-});
-
 export const studentSchema = z.object({
   first_name: z.string().min(2),
   last_name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(8).optional().or(z.literal("")),
-  assigned_counsellor_id: z.string().uuid().nullable().optional(),
   ielts_score: z.coerce.number().min(0).max(9).nullable().optional(),
   gpa: z.coerce.number().min(0).max(4).nullable().optional(),
   passport_number: z.string().optional().or(z.literal("")),

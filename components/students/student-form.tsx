@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { studentSchema } from "@/lib/utils/schemas";
 import { useToast } from "@/components/ui/toast-provider";
 import { Spinner } from "@/components/ui/spinner";
-import type { UserProfile } from "@/types";
 import type { z } from "zod";
 
 type FormValues = z.input<typeof studentSchema>;
@@ -23,7 +22,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-export function StudentForm({ counsellors }: { counsellors: UserProfile[] }) {
+export function StudentForm() {
   const [isPending, startTransition] = useTransition();
   const { push } = useToast();
   const {
@@ -62,7 +61,7 @@ export function StudentForm({ counsellors }: { counsellors: UserProfile[] }) {
       <div className="flex flex-col gap-2 border-b border-border pb-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h2 className="crm-section-title">New Student Intake</h2>
-          <p className="mt-1 text-sm text-text-secondary">Capture profile, destination, test score, and counsellor assignment in one pass.</p>
+          <p className="mt-1 text-sm text-text-secondary">Capture profile, destination, and test score in one pass.</p>
         </div>
         <p className="text-sm text-danger">{Object.values(errors)[0]?.message?.toString() ?? ""}</p>
       </div>
@@ -101,20 +100,6 @@ export function StudentForm({ counsellors }: { counsellors: UserProfile[] }) {
           </Field>
           <Field label="Country preference">
             <Input placeholder="United Kingdom, Germany" {...register("country_preferences.0")} />
-          </Field>
-          <Field label="Assigned counsellor">
-            <select
-              className="h-10 w-full rounded-lg border border-border bg-surface px-3 text-sm text-foreground"
-              {...register("assigned_counsellor_id")}
-              defaultValue=""
-            >
-              <option value="">Assign counsellor</option>
-              {counsellors.map((counsellor) => (
-                <option key={counsellor.id} value={counsellor.id}>
-                  {counsellor.full_name}
-                </option>
-              ))}
-            </select>
           </Field>
           <Field label="Private notes">
             <Textarea placeholder="Scholarship preference, budget notes, profile concerns..." {...register("private_notes")} />

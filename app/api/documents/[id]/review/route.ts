@@ -7,7 +7,7 @@ import { apiError } from "@/lib/utils/api";
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { profile } = await requireApiUser();
-    if (!["admin", "counsellor"].includes(profile.role)) {
+    if (profile.role !== "admin") {
       return apiError("Forbidden", "FORBIDDEN", 403);
     }
 
