@@ -198,5 +198,5 @@ on conflict (stage_index) do nothing;
 
 -- Insert admin user
 insert into public.users (id, email, full_name, role)
-values ('00000000-0000-0000-0000-000000000001', 'testadmin@globalgrads.local', 'Admin', 'admin')
+values ('00000000-0000-0000-0000-000000000001', 'admin@enrollio.com', 'Admin', 'admin')
 on conflict (id) do nothing;

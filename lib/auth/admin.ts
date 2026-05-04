@@ -1,11 +1,11 @@
 import type { UserProfile } from "@/types";
 
 export const ADMIN_SESSION_COOKIE = "gg_admin_session";
-export const ADMIN_EMAIL = "testadmin@globalgrads.local";
+export const ADMIN_EMAIL = "admin@enrollio.com";
 export const ADMIN_ID = "00000000-0000-0000-0000-000000000001";
 
 const ADMIN_PASSWORD_SALT = "global-grads-admin-login-v1";
-const ADMIN_PASSWORD_HASH = "nb1BTH+A3ialxUo4EQB1quR/ir7a80lq9uMTNkO6QbE=";
+const ADMIN_PASSWORD_HASH = "GAx4kWMj8s1P2YdkpvWPdmLUbJVH5BT4h4fjiJ/BKHo=";
 const ADMIN_SESSION_TTL_SECONDS = 60 * 60 * 8;
 const SESSION_SECRET =
   process.env.ADMIN_SESSION_SECRET ?? "global-grads-local-admin-session-secret-change-before-production";
