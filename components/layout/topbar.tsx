@@ -1,4 +1,7 @@
-import { Bell, Menu, Plus, Search, SlidersHorizontal } from "lucide-react";
+"use client";
+
+import { GlobalSearch } from "./global-search";
+import { Bell, Menu, Plus, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -27,20 +30,14 @@ export function Topbar({
           </div>
 
           <div className="grid gap-3 md:grid-cols-[minmax(0,22rem)_auto_auto_auto] md:items-center">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-              <Input
-                className="h-11 border-border-active bg-white/[0.03] pl-9"
-                placeholder="Search students, programs, universities..."
-              />
-            </div>
+            <GlobalSearch />
             <Button variant="secondary" size="icon" aria-label="Filters" className="h-11 w-11">
               <SlidersHorizontal className="size-4" />
             </Button>
             <Button variant="secondary" size="icon" aria-label="Notifications" className="h-11 w-11">
               <Bell className="size-4" />
             </Button>
-            <Button className="h-11 px-4">
+            <Button className="h-11 px-4" onClick={() => (window.location.href = "/crm/students")}>
               <Plus className="size-4" />
               Add Student
             </Button>

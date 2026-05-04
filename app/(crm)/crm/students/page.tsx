@@ -10,7 +10,7 @@ import { getCurrentUserProfile } from "@/lib/supabase/auth";
 export default async function StudentsPage({
   searchParams,
 }: {
-  searchParams: { studentId?: string };
+  searchParams: { studentId?: string; q?: string };
 }) {
   const [students, currentUser] = await Promise.all([getStudents(), getCurrentUserProfile()]);
   const selectedId = searchParams.studentId;
@@ -35,7 +35,7 @@ export default async function StudentsPage({
           </aside>
         </section>
         {students.length > 0 ? (
-          <StudentDirectory students={students} />
+          <StudentDirectory students={students} initialQuery={searchParams.q} />
         ) : (
           <EmptyState title="No students yet" description="Create the first student record to start the pipeline." />
         )}

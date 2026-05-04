@@ -1,11 +1,40 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Trash2 } from "lucide-react";
 import { stageDefinitions } from "@/lib/utils/constants";
 import { formatDate, getStudentName } from "@/lib/utils/format";
+import { useToast } from "@/components/ui/toast-provider";
 import type { Student } from "@/types";
 
 export function StudentsTable({ students }: { students: Student[] }) {
+  const router = useRouter();
+  const { push } = useToast();
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete ${name}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/students/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete student");
+      }
+
+      push("Student deleted", "success");
+      router.refresh();
+    } catch (error) {
+      push("Delete failed", "error");
+    }
+  };
   return (
     <Card className="crm-panel overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
@@ -27,6 +56,7 @@ export function StudentsTable({ students }: { students: Student[] }) {
               <th className="px-5 py-3 font-medium">Docs</th>
               <th className="px-5 py-3 font-medium">Progress</th>
               <th className="px-5 py-3 font-medium">Created</th>
+              <th className="px-5 py-3 font-medium text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -74,6 +104,16 @@ export function StudentsTable({ students }: { students: Student[] }) {
                     </div>
                   </td>
                   <td className="px-5 py-4 text-text-secondary">{formatDate(student.created_at)}</td>
+                  <td className="px-5 py-4 text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-8 text-text-muted hover:text-danger"
+                      onClick={() => handleDelete(student.id, getStudentName(student.first_name, student.last_name))}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </td>
                 </tr>
               );
             })}

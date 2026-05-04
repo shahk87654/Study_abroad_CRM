@@ -40,3 +40,27 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     return apiError(error instanceof Error ? error.message : "Unexpected error", "SERVER_ERROR", 500);
   }
 }
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const { profile } = await requireApiUser();
+    if (profile.role !== "admin") {
+      return apiError("Forbidden", "FORBIDDEN", 403);
+    }
+
+    const supabase = createSupabaseServerClient();
+    const { error } = await supabase
+      .from("students")
+      .delete()
+      .eq("id", params.id);
+
+    if (error) {
+      return apiError(error.message, "DELETE_FAILED", 400);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error in DELETE /api/students/[id]:", error);
+    return apiError(error instanceof Error ? error.message : "Unexpected error", "SERVER_ERROR", 500);
+  }
+}

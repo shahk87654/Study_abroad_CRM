@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { StudentsTable } from "@/components/students/students-table";
 import type { Student } from "@/types";
 
-export function StudentDirectory({ students }: { students: Student[] }) {
-  const [query, setQuery] = useState("");
+export function StudentDirectory({ students, initialQuery = "" }: { students: Student[]; initialQuery?: string }) {
+  const [query, setQuery] = useState(initialQuery);
 
   const filtered = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -19,9 +19,9 @@ export function StudentDirectory({ students }: { students: Student[] }) {
       const fullName = `${student.first_name} ${student.last_name}`.toLowerCase();
       return (
         fullName.includes(search) ||
-        student.student_code.toLowerCase().includes(search) ||
-        student.email.toLowerCase().includes(search) ||
-        student.country_preferences.join(" ").toLowerCase().includes(search)
+        (student.student_code ?? "").toLowerCase().includes(search) ||
+        (student.email ?? "").toLowerCase().includes(search) ||
+        (student.country_preferences ?? []).join(" ").toLowerCase().includes(search)
       );
     });
   }, [query, students]);

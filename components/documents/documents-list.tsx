@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,12 @@ function DocumentRow({ document }: { document: ListedDocument }) {
   return (
     <div className="grid grid-cols-[1.3fr_1fr_1fr_1fr_auto] gap-3 px-4 py-4 text-sm items-center">
       <div>
-        <p className="font-medium">{document.students?.student_code ?? "Unknown"}</p>
+        <Link 
+          href={`/crm/students?studentId=${document.students?.id}`} 
+          className="font-medium hover:text-primary transition-colors cursor-pointer"
+        >
+          {document.students?.student_code ?? "Unknown"}
+        </Link>
         <p className="mt-1 text-xs text-text-secondary truncate max-w-[200px]" title={document.file_name}>{document.file_name}</p>
       </div>
       <span className="capitalize">{document.category}</span>

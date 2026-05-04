@@ -53,7 +53,28 @@ export function DocumentsWorkspace({
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-text-muted">Student ID</span>
+            <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-text-muted">Quick Jump (ID)</span>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+              <input
+                type="text"
+                placeholder="EN-001..."
+                className="h-10 w-full rounded-lg border border-border bg-surface pl-9 pr-3 text-sm text-foreground outline-none focus:border-primary"
+                onKeyDown={async (e) => {
+                  if (e.key === "Enter") {
+                    const search = (e.target as HTMLInputElement).value.trim().toUpperCase();
+                    const student = students.find((s) => s.student_code.toUpperCase() === search);
+                    if (student) {
+                      setSelectedStudentId(student.id);
+                      (e.target as HTMLInputElement).value = "";
+                    }
+                  }
+                }}
+              />
+            </div>
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-text-muted">Student selector</span>
             <select
               value={selectedStudentId}
               onChange={(event) => setSelectedStudentId(event.target.value)}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export function StudentForm() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const { push } = useToast();
   const {
     register,
@@ -47,12 +49,14 @@ export function StudentForm() {
       });
 
       if (!response.ok) {
-        push("Unable to create student", "error");
+        const error = await response.json();
+        push(error.message || "Unable to create student", "error");
         return;
       }
 
       push("Student created", "success");
       reset();
+      router.refresh();
     });
   });
 

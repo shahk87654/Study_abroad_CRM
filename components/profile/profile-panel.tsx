@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Download, Mail, MapPinned, Phone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,14 @@ export function ProfilePanel({
 }) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Overview");
   const [isAddingApp, setIsAddingApp] = useState(false);
+  const router = useRouter();
   const { push } = useToast();
+
+  const close = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("studentId");
+    router.push(url.pathname + url.search);
+  };
 
   const handleDownload = async (documentId: string) => {
     try {
@@ -43,7 +51,12 @@ export function ProfilePanel({
   };
 
   return (
-    <aside className="fixed inset-y-0 right-0 z-40 w-full border-l border-border bg-[#0a0f1c] lg:w-[440px]">
+    <>
+      <div 
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity animate-in fade-in duration-300" 
+        onClick={close}
+      />
+      <aside className="fixed inset-y-0 right-0 z-50 w-full border-l border-border bg-[#0a0f1c] shadow-2xl animate-in slide-in-from-right duration-300 lg:w-[440px]">
       <div className="flex h-full flex-col">
         <div className="border-b border-border px-5 py-5">
           <div className="flex items-start justify-between gap-4">
@@ -51,7 +64,7 @@ export function ProfilePanel({
               <p className="truncate font-display text-2xl font-semibold">{getStudentName(student.first_name, student.last_name)}</p>
               <p className="mt-1 text-sm text-text-secondary">{student.student_code}</p>
             </div>
-            <Button variant="secondary" size="icon" onClick={() => (window.location.href = "/crm/students")}>
+            <Button variant="secondary" size="icon" onClick={close}>
               <X className="size-4" />
             </Button>
           </div>
@@ -194,5 +207,6 @@ export function ProfilePanel({
         </div>
       </div>
     </aside>
+    </>
   );
 }
