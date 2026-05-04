@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast-provider";
@@ -19,6 +20,7 @@ export function UploadZone({
   onUploaded?: () => void;
 }) {
   const inputId = useId();
+  const router = useRouter();
   const { push } = useToast();
   const [isPending, startTransition] = useTransition();
 
@@ -54,7 +56,8 @@ export function UploadZone({
             });
 
             if (!response.ok) {
-              push("Upload session failed", "error");
+              const error = (await response.json()) as { message?: string };
+              push(error.message ?? "Upload session failed", "error");
               return;
             }
 
@@ -81,12 +84,15 @@ export function UploadZone({
 
             push("Document uploaded", "success");
             onUploaded?.();
+            router.refresh();
           });
         }}
       />
-      <Button variant="ghost" size="sm" className="mt-4" disabled={isPending}>
-        {isPending ? "Uploading..." : "Select file"}
-      </Button>
+      <label htmlFor={inputId} className="mt-4 block">
+        <Button variant="ghost" size="sm" className="w-full" disabled={isPending} asChild>
+          <span>{isPending ? "Uploading..." : "Select file"}</span>
+        </Button>
+      </label>
     </div>
   );
 }
