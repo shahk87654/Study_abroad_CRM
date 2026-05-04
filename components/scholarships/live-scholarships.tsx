@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { scholarshipCatalog } from "@/lib/utils/constants";
 import { getStudentName } from "@/lib/utils/format";
 import type { ScholarshipRule, Student } from "@/types";
 
@@ -15,13 +14,13 @@ function matchScholarships(student: Student, scholarships: ScholarshipRule[]) {
       student.country_preferences.some((country) =>
         country.toLowerCase().includes(scholarship.country.toLowerCase().split(" ")[0].toLowerCase()),
       );
-    const ieltsMatch = (student.ielts_score ?? 0) >= scholarship.minIelts;
-    const degreeMatch = (student.program_interest ?? "").toLowerCase().includes(scholarship.degreeLevel.toLowerCase());
+    const ieltsMatch = (student.ielts_score ?? 0) >= scholarship.min_ielts;
+    const degreeMatch = (student.program_interest ?? "").toLowerCase().includes(scholarship.degree_level.toLowerCase());
     return countryMatch && ieltsMatch && degreeMatch;
   });
 }
 
-export function LiveScholarships({ students }: { students: Student[] }) {
+export function LiveScholarships({ students, scholarships }: { students: Student[], scholarships: ScholarshipRule[] }) {
   const [query, setQuery] = useState("");
   const [countryFilter, setCountryFilter] = useState("all");
 
@@ -31,7 +30,7 @@ export function LiveScholarships({ students }: { students: Student[] }) {
     return students
       .map((student) => ({
         student,
-        matches: matchScholarships(student, scholarshipCatalog),
+        matches: matchScholarships(student, scholarships),
       }))
       .filter(({ student, matches }) => {
         const searchOk =
@@ -46,7 +45,7 @@ export function LiveScholarships({ students }: { students: Student[] }) {
 
         return searchOk && countryOk && matches.length > 0;
       });
-  }, [countryFilter, query, students]);
+  }, [countryFilter, query, students, scholarships]);
 
   return (
     <div className="space-y-6">
@@ -115,7 +114,7 @@ export function LiveScholarships({ students }: { students: Student[] }) {
                     <span className="text-xs text-text-secondary">{scholarship.country}</span>
                   </div>
                   <p className="mt-2 text-sm text-text-secondary">{scholarship.summary}</p>
-                  <p className="mt-3 text-xs text-text-muted">Minimum IELTS {scholarship.minIelts} | {scholarship.degreeLevel}</p>
+                  <p className="mt-3 text-xs text-text-muted">Minimum IELTS {scholarship.min_ielts} | {scholarship.degree_level}</p>
                 </div>
               ))}
             </div>

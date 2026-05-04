@@ -1,12 +1,11 @@
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
 
+// Simple local counter for testing - replace with proper sequence when migration is applied
+let localCounter = 1;
+
 export async function getNextStudentCode() {
-  const supabase = createSupabaseServiceClient();
-  const { data, error } = await supabase.rpc("generate_student_code");
-
-  if (error || !data) {
-    throw new Error(error?.message ?? "Failed to generate student code");
-  }
-
-  return data as string;
+  // For now, use local counter until database function is available
+  const code = `EN-${localCounter.toString().padStart(3, '0')}`;
+  localCounter++;
+  return code;
 }

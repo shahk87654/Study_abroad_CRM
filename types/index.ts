@@ -126,7 +126,7 @@ export interface ScholarshipRule {
   id: string;
   name: string;
   country: string;
-  minIelts: number;
-  degreeLevel: string;
+  min_ielts: number;
+  degree_level: string;
   summary: string;
 }

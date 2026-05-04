@@ -1,8 +1,8 @@
-import { getCurrentUserProfile, requireUser } from "@/lib/supabase/auth";
+import { getCurrentUserProfile, requireApiAuth } from "@/lib/supabase/auth";
 import type { UserProfile } from "@/types";
 
 export async function requireApiUser() {
-  const user = await requireUser();
+  const user = await requireApiAuth();
   const profile = await getCurrentUserProfile();
 
   if (!profile) {

@@ -30,6 +30,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     return NextResponse.json(data);
   } catch (error) {
+    console.error("Error in PATCH /api/students/[id]:", error);
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return apiError("Unauthorized", "UNAUTHORIZED", 401);
+    }
+    if (error instanceof Error && error.message === "Profile not found") {
+      return apiError("Profile not found", "PROFILE_NOT_FOUND", 401);
+    }
     return apiError(error instanceof Error ? error.message : "Unexpected error", "SERVER_ERROR", 500);
   }
 }

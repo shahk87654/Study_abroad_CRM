@@ -41,12 +41,12 @@ export async function getCurrentUserProfile(): Promise<UserProfile | null> {
   return null;
 }
 
-export async function requireRole(allowedRoles: UserRole[]) {
-  const profile = await getCurrentUserProfile();
+export async function requireApiAuth() {
+  const session = await getCurrentSession();
 
-  if (!profile || !allowedRoles.includes(profile.role)) {
-    redirect("/crm");
+  if (!session?.user) {
+    throw new Error("Unauthorized");
   }
 
-  return profile;
+  return session.user;
 }

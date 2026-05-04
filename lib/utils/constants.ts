@@ -13,9 +13,3 @@ export const stageDefinitions: Stage[] = [
   { id: "stage-9", stage_index: 9, key: "enrolled", label: "Enrolled", description: "Student enrolled and journey closed.", color_token: "success" },
 ];
 
-export const scholarshipCatalog: ScholarshipRule[] = [
-  { id: "chevening", name: "Chevening", country: "United Kingdom", minIelts: 6.5, degreeLevel: "Masters", summary: "Leadership-focused UK scholarship covering tuition and living support." },
-  { id: "daad", name: "DAAD", country: "Germany", minIelts: 6, degreeLevel: "Masters", summary: "German scholarship program for postgraduate study and research." },
-  { id: "erasmus", name: "Erasmus Mundus", country: "Europe", minIelts: 6.5, degreeLevel: "Masters", summary: "Multi-country joint degree scholarship across European institutions." },
-  { id: "commonwealth", name: "Commonwealth Scholarship", country: "United Kingdom", minIelts: 6.5, degreeLevel: "Masters", summary: "Commonwealth-funded postgraduate scholarship for high-potential applicants." },
-];

@@ -1,7 +1,7 @@
 create extension if not exists "pgcrypto";
 
 create table if not exists public.users (
-  id uuid primary key references auth.users(id) on delete cascade,
+  id uuid primary key,
   email text not null unique,
   full_name text not null,
   role text not null check (role in ('admin', 'counsellor', 'student')),
@@ -149,28 +149,35 @@ as $$
   )
 $$;
 
+drop policy if exists "students_select" on public.students;
 create policy "students_select" on public.students
 for select using (public.student_visible(id));
 
+drop policy if exists "students_update_admin_counsellor" on public.students;
 create policy "students_update_admin_counsellor" on public.students
 for update using (public.current_role() in ('admin', 'counsellor'))
 with check (public.current_role() in ('admin', 'counsellor'));
 
+drop policy if exists "students_insert_admin_counsellor" on public.students;
 create policy "students_insert_admin_counsellor" on public.students
 for insert with check (public.current_role() in ('admin', 'counsellor'));
 
+drop policy if exists "applications_all" on public.applications;
 create policy "applications_all" on public.applications
 for all using (public.student_visible(student_id))
 with check (public.student_visible(student_id));
 
+drop policy if exists "documents_all" on public.documents;
 create policy "documents_all" on public.documents
 for all using (public.student_visible(student_id))
 with check (public.student_visible(student_id));
 
+drop policy if exists "messages_all" on public.messages;
 create policy "messages_all" on public.messages
 for all using (public.student_visible(student_id))
 with check (public.student_visible(student_id));
 
+drop policy if exists "stage_history_all" on public.stage_history;
 create policy "stage_history_all" on public.stage_history
 for all using (public.student_visible(student_id))
 with check (public.student_visible(student_id));
@@ -188,3 +195,8 @@ values
   (8, 'visa_approved', 'Visa Approved', 'Visa decision approved.', 'success'),
   (9, 'enrolled', 'Enrolled', 'Student enrolled and journey closed.', 'success')
 on conflict (stage_index) do nothing;
+
+-- Insert admin user
+insert into public.users (id, email, full_name, role)
+values ('00000000-0000-0000-0000-000000000001', 'testadmin@globalgrads.local', 'Admin', 'admin')
+on conflict (id) do nothing;

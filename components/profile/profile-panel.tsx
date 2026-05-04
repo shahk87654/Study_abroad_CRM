@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { UploadZone } from "@/components/documents/upload-zone";
 import { MessagesThread } from "@/components/profile/messages-thread";
 import { TimelineTab } from "@/components/profile/timeline-tab";
+import { AddApplicationForm } from "@/components/profile/add-application-form";
 import { StageTracker } from "@/components/pipeline/stage-tracker";
 import { stageDefinitions } from "@/lib/utils/constants";
 import { formatDate, getStudentName } from "@/lib/utils/format";
@@ -26,6 +27,7 @@ export function ProfilePanel({
   currentUser: UserProfile;
 }) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Overview");
+  const [isAddingApp, setIsAddingApp] = useState(false);
 
   return (
     <aside className="fixed inset-y-0 right-0 z-40 w-full border-l border-border bg-[#0a0f1c] lg:w-[440px]">
@@ -141,19 +143,31 @@ export function ProfilePanel({
           ) : null}
 
           {activeTab === "Applications" ? (
-            <div className="space-y-3">
-              {student.applications?.map((application) => (
-                <div key={application.id} className="crm-panel p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="font-medium">{application.university_name}</p>
-                      <p className="mt-1 text-sm text-text-secondary">{application.program_name}</p>
+            <div className="space-y-4">
+              <div className="flex justify-end">
+                <Button onClick={() => setIsAddingApp(true)} disabled={isAddingApp} size="sm">
+                  Add Application
+                </Button>
+              </div>
+              
+              {isAddingApp && (
+                <AddApplicationForm studentId={student.id} onComplete={() => setIsAddingApp(false)} />
+              )}
+              
+              <div className="space-y-3">
+                {student.applications?.map((application) => (
+                  <div key={application.id} className="crm-panel p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="font-medium">{application.university_name}</p>
+                        <p className="mt-1 text-sm text-text-secondary">{application.program_name}</p>
+                      </div>
+                      <Badge className="border-border-active bg-white/5 text-text-primary">{application.decision_status}</Badge>
                     </div>
-                    <Badge className="border-border-active bg-white/5 text-text-primary">{application.decision_status}</Badge>
+                    <p className="mt-3 text-sm text-text-secondary">Deadline: {formatDate(application.deadline)}</p>
                   </div>
-                  <p className="mt-3 text-sm text-text-secondary">Deadline: {formatDate(application.deadline)}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : null}
 
