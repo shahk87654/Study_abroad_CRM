@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useTransition } from "react";
+import { useId, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ export function UploadZone({
   onUploaded?: () => void;
 }) {
   const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { push } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -35,6 +36,7 @@ export function UploadZone({
       </label>
       <input
         id={inputId}
+        ref={inputRef}
         type="file"
         className="hidden"
         onChange={(event) => {
@@ -88,11 +90,15 @@ export function UploadZone({
           });
         }}
       />
-      <label htmlFor={inputId} className="mt-4 block">
-        <Button variant="ghost" size="sm" className="w-full" disabled={isPending} asChild>
-          <span>{isPending ? "Uploading..." : "Select file"}</span>
-        </Button>
-      </label>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="mt-4 w-full"
+        disabled={isPending}
+        onClick={() => inputRef.current?.click()}
+      >
+        {isPending ? "Uploading..." : "Select file"}
+      </Button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast-provider";
 import { formatDate } from "@/lib/utils/format";
@@ -41,6 +42,17 @@ function DocumentRow({ document }: { document: ListedDocument }) {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(`/api/documents/${document.id}/download`);
+      if (!response.ok) throw new Error("Failed to get download link");
+      const { url } = await response.json();
+      window.open(url, "_blank");
+    } catch (error) {
+      push("Download failed", "error");
+    }
+  };
+
   const needsReview = ["pending", "uploaded", "under_review"].includes(document.status);
 
   return (
@@ -52,12 +64,17 @@ function DocumentRow({ document }: { document: ListedDocument }) {
       <span className="capitalize">{document.category}</span>
       <div className="flex flex-col items-start gap-2">
         <Badge className="w-fit border-border-active bg-white/5 text-text-primary">{document.status}</Badge>
-        {needsReview ? (
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="secondary" onClick={() => handleReview("approved")} disabled={isReviewing} className="h-6 text-[10px] px-2 py-0">Approve</Button>
-            <Button size="sm" variant="secondary" onClick={() => handleReview("rejected")} disabled={isReviewing} className="h-6 text-[10px] px-2 py-0 text-danger hover:text-danger">Reject</Button>
-          </div>
-        ) : null}
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-text-muted hover:text-primary" onClick={handleDownload} title="Download/View">
+            <Download className="size-3" />
+          </Button>
+          {needsReview ? (
+            <>
+              <Button size="sm" variant="secondary" onClick={() => handleReview("approved")} disabled={isReviewing} className="h-6 text-[10px] px-2 py-0">Approve</Button>
+              <Button size="sm" variant="secondary" onClick={() => handleReview("rejected")} disabled={isReviewing} className="h-6 text-[10px] px-2 py-0 text-danger hover:text-danger">Reject</Button>
+            </>
+          ) : null}
+        </div>
       </div>
       <span className="text-text-secondary">{formatDate(document.reviewed_at)}</span>
       <span className="max-w-52 text-text-secondary">{document.rejection_reason ?? "-"}</span>

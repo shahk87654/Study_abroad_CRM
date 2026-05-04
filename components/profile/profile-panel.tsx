@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MapPinned, Phone, X } from "lucide-react";
+import { Download, Mail, MapPinned, Phone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { UploadZone } from "@/components/documents/upload-zone";
@@ -11,6 +11,7 @@ import { AddApplicationForm } from "@/components/profile/add-application-form";
 import { StageTracker } from "@/components/pipeline/stage-tracker";
 import { stageDefinitions } from "@/lib/utils/constants";
 import { formatDate, getStudentName } from "@/lib/utils/format";
+import { useToast } from "@/components/ui/toast-provider";
 import type { MessageRecord, StageHistoryEntry, Student, UserProfile } from "@/types";
 
 const tabs = ["Overview", "Documents", "Applications", "Timeline", "Messages"] as const;
@@ -28,6 +29,18 @@ export function ProfilePanel({
 }) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Overview");
   const [isAddingApp, setIsAddingApp] = useState(false);
+  const { push } = useToast();
+
+  const handleDownload = async (documentId: string) => {
+    try {
+      const response = await fetch(`/api/documents/${documentId}/download`);
+      if (!response.ok) throw new Error("Failed to get download link");
+      const { url } = await response.json();
+      window.open(url, "_blank");
+    } catch (error) {
+      push("Download failed", "error");
+    }
+  };
 
   return (
     <aside className="fixed inset-y-0 right-0 z-40 w-full border-l border-border bg-[#0a0f1c] lg:w-[440px]">
@@ -128,9 +141,14 @@ export function ProfilePanel({
                     <div className="space-y-3">
                       {grouped.map((document) => (
                         <div key={document.id} className="rounded-lg border border-border bg-[#0f1729] p-3">
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm">{document.file_name}</p>
-                            <Badge className="border-border-active bg-white/5 text-text-primary">{document.status}</Badge>
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="truncate text-sm" title={document.file_name}>{document.file_name}</p>
+                            <div className="flex shrink-0 items-center gap-2">
+                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-text-muted hover:text-primary" onClick={() => handleDownload(document.id)}>
+                                <Download className="size-3.5" />
+                              </Button>
+                              <Badge className="border-border-active bg-white/5 text-[10px] text-text-primary">{document.status}</Badge>
+                            </div>
                           </div>
                           {document.rejection_reason ? <p className="mt-2 text-xs text-danger">{document.rejection_reason}</p> : null}
                         </div>
